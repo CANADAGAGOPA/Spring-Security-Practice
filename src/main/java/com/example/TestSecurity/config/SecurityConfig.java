@@ -21,7 +21,15 @@ public class SecurityConfig {
                         .anyRequest().authenticated() // 그 외의 요청은 인증이 필요함
                 );
 
+        http
+                .formLogin((auth) -> auth.loginPage("/login") // 로그인 페이지 경로
+                        .loginProcessingUrl("/loginProc") // /loginProc 경로로 요청이 오면 로그인 처리
+                        .permitAll() // 로그인 페이지는 인증 없이 접근 가능
+                );
 
+        http
+                .csrf((auth) -> auth.disable() // 임시로 csrf 기능을 비활성화
+                );
 
         return http.build();
     }
