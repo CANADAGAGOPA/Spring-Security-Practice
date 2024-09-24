@@ -22,7 +22,7 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/", "/login").permitAll() // 해당 요청은 인증 없이 접근 가능
+                        .requestMatchers("/", "/login", "/loginProc", "/join", "/joinProc").permitAll() // 해당 요청은 인증 없이 접근 가능
                         .requestMatchers("/admin").hasRole("ADMIN") // 해당 요청은 ADMIN 권한이 있어야 접근 가능
                         .requestMatchers("/my/**").hasAnyRole("ADMIN", "USER") // 해당 요청은 ADMIN, USER 권한이 있어야 접근 가능
                         .anyRequest().authenticated() // 그 외의 요청은 인증이 필요함
