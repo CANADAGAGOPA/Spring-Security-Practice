@@ -2,6 +2,7 @@ package com.example.TestSecurity.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,11 +29,16 @@ public class SecurityConfig {
                         .anyRequest().authenticated() // 그 외의 요청은 인증이 필요함
                 );
 
+//        http
+//                .formLogin((auth) -> auth.loginPage("/login") // 로그인 페이지 경로
+//                        .loginProcessingUrl("/loginProc") // /loginProc 경로로 요청이 오면 로그인 처리
+//                        .permitAll() // 로그인 페이지는 인증 없이 접근 가능
+//                );
+
+        // http basic 인증
         http
-                .formLogin((auth) -> auth.loginPage("/login") // 로그인 페이지 경로
-                        .loginProcessingUrl("/loginProc") // /loginProc 경로로 요청이 오면 로그인 처리
-                        .permitAll() // 로그인 페이지는 인증 없이 접근 가능
-                );
+                .httpBasic(Customizer.withDefaults()
+                ); // http basic 인증은 http 헤더에 데이터를 실어 보내는 방식으로 인증을 처리
 
 //        http
 //                .csrf((auth) -> auth.disable() // 임시로 csrf 기능을 비활성화
