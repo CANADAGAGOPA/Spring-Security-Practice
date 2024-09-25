@@ -1,4 +1,8 @@
 spring:
+  mustache:
+    servlet:
+      exposed-request-attributes: true
+
   jpa:
     hibernate:
       ddl-auto: none

@@ -34,9 +34,9 @@ public class SecurityConfig {
                         .permitAll() // 로그인 페이지는 인증 없이 접근 가능
                 );
 
-        http
-                .csrf((auth) -> auth.disable() // 임시로 csrf 기능을 비활성화
-                );
+//        http
+//                .csrf((auth) -> auth.disable() // 임시로 csrf 기능을 비활성화
+//                );
 
         // 다중 로그인 설정
         http
