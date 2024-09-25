@@ -20,7 +20,8 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     } // BCryptPasswordEncoder 빈 등록
 
-    // RoleHierarchy 설정 (RoleHierarchy 는 계층형 권한을 설정하는 메소드)
+    //  설정 (RoleHierarchy 는 계층형 권한을 설정하는 메소드)
+    // Spring Security 6.0.0 이상에서의 RoleHierarchy 설정 방법
     @Bean
     public RoleHierarchy roleHierarchy() {
 
