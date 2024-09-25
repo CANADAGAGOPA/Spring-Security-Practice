@@ -2,6 +2,8 @@ package com.example.TestSecurity.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,6 +20,16 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     } // BCryptPasswordEncoder 빈 등록
 
+    // RoleHierarchy 설정 (RoleHierarchy 는 계층형 권한을 설정하는 메소드)
+    @Bean
+    public RoleHierarchy roleHierarchy() {
+
+        return RoleHierarchyImpl.withDefaultRolePrefix()
+                .role("ADMIN").implies("MANAGER") // ADMIN 권한은 MANAGER 권한을 포함
+                .role("MANAGER").implies("USER") // MANAGER 권한은 USER 권한을 포함
+                .build();
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
@@ -25,10 +37,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/", "/login", "/loginProc", "/join", "/joinProc").permitAll() // 해당 요청은 인증 없이 접근 가능
                         .requestMatchers("/admin").hasRole("ADMIN") // 해당 요청은 ADMIN 권한이 있어야 접근 가능
-                        .requestMatchers("/my/**").hasAnyRole("ADMIN", "USER") // 해당 요청은 ADMIN, USER 권한이 있어야 접근 가능
+                        .requestMatchers("/manager").hasAnyRole("MANAGER", "ADMIN") // 해당 요청은 MANAGER, ADMIN 권한 중 하나라도 있어야 접근 가능
+                        .requestMatchers("/my/**").hasAnyRole("ADMIN", "MANAGER", "USER") // 해당 요청은 ADMIN, MANAGER, USER 권한 중 하나라도 있어야 접근 가능
                         .anyRequest().authenticated() // 그 외의 요청은 인증이 필요함
                 );
 
+
+        // form 로그인 설정
 //        http
 //                .formLogin((auth) -> auth.loginPage("/login") // 로그인 페이지 경로
 //                        .loginProcessingUrl("/loginProc") // /loginProc 경로로 요청이 오면 로그인 처리
