@@ -28,8 +28,8 @@ public class MainController {
         GrantedAuthority auth = iter.next();
         String role = auth.getAuthority();
 
-        model.addAttribute("id", id); // id를 모델에 추가
-        model.addAttribute("role", role); // role을 모델에 추가
+        model.addAttribute("id", id); // id 를 모델에 추가
+        model.addAttribute("role", role); // role 을 모델에 추가
 
         return "main";
     }

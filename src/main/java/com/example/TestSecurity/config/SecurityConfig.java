@@ -38,6 +38,21 @@ public class SecurityConfig {
                 .csrf((auth) -> auth.disable() // 임시로 csrf 기능을 비활성화
                 );
 
+        // 다중 로그인 설정
+        http
+                .sessionManagement((auth) -> auth // 세션 관리
+                        .maximumSessions(1) // 하나의 계정으로 한 번에 로그인 가능한 세션 수
+                        .maxSessionsPreventsLogin(true) // 최대 세션 수 초과 시 로그인 방지
+                        // maxSessionsPreventsLogin 는 다중 로그인 개수를 초과할 경우 로그인을 막을지 여부를 결정하는 메소드
+                        // true 로 설정하면 다중 로그인을 막음, false 로 설정하면 기존 세션을 만료시킴
+                );
+
+        // 세션 고정 보호
+        http
+                .sessionManagement((auth) -> auth
+                        .sessionFixation().changeSessionId() // 세션 고정 보호를 위해 세션 ID 를 변경
+                );
+
         return http.build();
     }
 }
